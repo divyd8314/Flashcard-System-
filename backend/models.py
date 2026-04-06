@@ -2,14 +2,13 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, Date, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from database import Base
-import datetime
-
+from datetime import datetime, UTC
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
     decks = relationship("Deck", back_populates="owner")
     sessions = relationship("StudySession", back_populates="user")
@@ -22,7 +21,7 @@ class Deck(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     title = Column(String, nullable=False)
     subject = Column(String)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
     owner = relationship("User", back_populates="decks")
     cards = relationship("Card", back_populates="deck")
@@ -37,7 +36,7 @@ class Card(Base):
     ease_factor = Column(Float, default=2.5)
     interval_days = Column(Integer, default=1)
     retention_score = Column(Float, default=1.0)
-    next_review = Column(DateTime, default=datetime.datetime.utcnow)
+    next_review = Column(DateTime, default=lambda: datetime.now(UTC))
     last_reviewed = Column(DateTime, nullable=True)
 
     deck = relationship("Deck", back_populates="cards")
@@ -51,7 +50,7 @@ class CardReview(Base):
     session_id = Column(Integer, ForeignKey("study_sessions.id"))
     was_correct = Column(Boolean, nullable=False)
     response_time_ms = Column(Integer)
-    reviewed_at = Column(DateTime, default=datetime.datetime.utcnow)
+    reviewed_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
     card = relationship("Card", back_populates="reviews")
     session = relationship("StudySession", back_populates="reviews")
@@ -61,7 +60,7 @@ class StudySession(Base):
     __tablename__ = "study_sessions"
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    started_at = Column(DateTime, default=datetime.datetime.utcnow)
+    started_at = Column(DateTime, default=lambda: datetime.now(UTC))
     ended_at = Column(DateTime, nullable=True)
     cards_reviewed = Column(Integer, default=0)
     accuracy = Column(Float, nullable=True)

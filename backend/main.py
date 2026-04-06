@@ -3,7 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
 from routers import users
-from routers import users, decks        # add decks here
+from routers import users, decks
+from routers import users, decks, cards
 
 # This line actually creates all your tables in Postgres on startup
 Base.metadata.create_all(bind=engine)
@@ -12,6 +13,9 @@ app = FastAPI(title="Adaptive Learning API")
 app.include_router(users.router,  prefix="/api/users")
 app.include_router(decks.router,  prefix="/api/decks")   # add this line
 app.include_router(users.router, prefix="/api")
+app.include_router(users.router,  prefix="/api/users")
+app.include_router(decks.router,  prefix="/api/decks")
+app.include_router(cards.router,  prefix="/api/cards")
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,5 +1,6 @@
 from pydantic import BaseModel, field_validator
 import re
+from datetime import datetime
 
 class UserCreate(BaseModel):
     email: str
@@ -43,8 +44,8 @@ class DeckResponse(BaseModel):
     title: str
     subject: str
 
-class Config:
-    from_attributes = True
+    class Config:
+        from_attributes = True
     
 
 # ─── CARDS ───────────────────────────────────────
