@@ -41,3 +41,12 @@ def delete_deck(deck_id: int, db: Session = Depends(get_db)):
     db.delete(deck)
     db.commit()
     return {"message": "Deck deleted"}
+
+@router.put("/{deck_id}/exam-date")
+def set_exam_date(deck_id: int, data: schemas.ExamDateSet, db: Session = Depends(get_db)):
+    deck = db.query(models.Deck).filter(models.Deck.id == deck_id).first()
+    if not deck:
+        raise HTTPException(status_code=404, detail="Deck not found")
+    deck.exam_date = data.exam_date
+    db.commit()
+    return {"message": f"Exam date set to {data.exam_date}"}
