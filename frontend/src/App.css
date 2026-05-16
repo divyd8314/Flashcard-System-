@@ -1,0 +1,86 @@
+
+.stories-track-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.stories-track-wrap::before,
+.stories-track-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.stories-track-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, #f8fafc, transparent);
+}
+
+.stories-track-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, #f8fafc, transparent);
+}
+
+.stories-track {
+  display: flex;
+  gap: 16px;
+  width: max-content; /* grows to fit all bubbles */
+  animation: marquee 32s linear infinite;
+}
+
+/* Pause on hover — nice UX touch so users can read */
+.stories-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* moves left by half = one full set */
+}
+
+/* ── HERO PULSE BADGE ─────────────────────────────────────
+   The small dot in the "now in beta" badge pulses to draw
+   attention without being annoying.
+──────────────────────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
+
+.hero-badge-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--blue);
+  border-radius: 50%;
+  animation: pulse 2.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ── FADE IN ON LOAD ──────────────────────────────────────
+   Subtle entrance animation for hero content.
+   Apply .fade-in to any element you want to animate in.
+   Use animation-delay to stagger children.
+──────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeUp 0.55s ease both;
+}
+
+.fade-in-1 { animation-delay: 0.05s; }
+.fade-in-2 { animation-delay: 0.15s; }
+.fade-in-3 { animation-delay: 0.25s; }
+.fade-in-4 { animation-delay: 0.38s; }

@@ -1,0 +1,339 @@
+/*
+  ============================================================
+  index.css — Global Design System for FlashLearn
+  ============================================================
+
+  This file defines the entire visual foundation of the app.
+  Think of it like a rulebook — every component and page
+  should inherit from these rules rather than define its own
+  colors, fonts, or spacing from scratch.
+
+  Structure:
+    1. Google Fonts import
+    2. CSS Custom Properties (design tokens)
+    3. Reset & base styles
+    4. Typography scale
+    5. Layout utilities (.container, .section)
+    6. Reusable UI components (.btn, .card)
+    7. Header
+    8. Responsive breakpoints
+  ============================================================
+*/
+
+/* ── 1. FONTS ─────────────────────────────────────────────
+   Sora     → headings (geometric, modern, high-impact)
+   DM Sans  → body text (clean, readable, neutral)
+   We load both from Google Fonts via a <link> in index.html
+   (see note at bottom of this file)
+──────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ── 2. CSS CUSTOM PROPERTIES (Design Tokens) ─────────────
+   Custom properties (CSS variables) let us define colors,
+   spacing, and radii once and reuse them everywhere.
+   Change --blue here and every button, badge, and link
+   updates automatically.
+──────────────────────────────────────────────────────────── */
+:root {
+  /* Brand colors */
+  --blue:        #2563eb;
+  --blue-dark:   #1d4ed8;
+  --blue-light:  #eff6ff;
+  --blue-mid:    #dbeafe;
+
+  /* Text */
+  --text:        #0f172a;   /* near-black for headings */
+  --muted:       #64748b;   /* gray for secondary text */
+  --muted-light: #94a3b8;   /* lighter gray for hints */
+
+  /* Backgrounds */
+  --bg:          #ffffff;
+  --surface:     #f8fafc;   /* slightly off-white */
+  --surface2:    #f1f5f9;   /* a step darker */
+
+  /* Borders */
+  --border:      #e2e8f0;
+
+  /* Border radii */
+  --radius:      14px;
+  --radius-sm:   8px;
+  --radius-full: 999px;
+
+  /* Shadows */
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.08);
+  --shadow-blue: 0 8px 32px rgba(37,99,235,0.12);
+}
+
+/* ── 3. RESET & BASE ──────────────────────────────────────
+   Box-sizing: border-box means padding/border are included
+   in element width, which makes layout math much easier.
+──────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* smooth anchor scrolling */
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased; /* crisper text on macOS */
+  overflow-x: hidden;                  /* prevent horizontal scroll */
+}
+
+/* ── 4. TYPOGRAPHY ────────────────────────────────────────
+   All headings use Sora for that premium SaaS feel.
+   letter-spacing: -0.03em tightens large text slightly —
+   a small trick that makes headings look more polished.
+──────────────────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: 'Sora', sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+p {
+  line-height: 1.65;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── 5. LAYOUT UTILITIES ──────────────────────────────────
+   .container   → centers content, caps width at 1080px
+   .section     → standard vertical breathing room
+   .section-label → small uppercase blue eyebrow text
+──────────────────────────────────────────────────────────── */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.section {
+  padding: 100px 40px;
+}
+
+.section-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* Eyebrow label above section titles */
+.section-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 14px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Section main heading */
+.section-title {
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+/* Section subtitle / lead text */
+.section-sub {
+  font-size: 18px;
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.65;
+}
+
+/* ── 6. REUSABLE UI COMPONENTS ────────────────────────────
+
+   BUTTONS
+   -------
+   .btn          → base styles (all buttons need this)
+   .btn-primary  → solid blue fill
+   .btn-outline  → transparent with border
+   .btn-white    → white fill (used on dark backgrounds)
+
+   Size modifiers:
+   .btn-lg  → slightly larger
+   .btn-xl  → hero/CTA size
+──────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  transition: background 0.18s, transform 0.18s, border-color 0.18s;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--blue-dark);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+.btn-outline:hover {
+  border-color: #94a3b8;
+  background: var(--surface);
+}
+
+.btn-white {
+  background: #fff;
+  color: var(--blue);
+  font-weight: 700;
+}
+.btn-white:hover {
+  background: var(--blue-light);
+  transform: translateY(-2px);
+}
+
+.btn-lg  { padding: 14px 28px; font-size: 16px; border-radius: 12px; }
+.btn-xl  { padding: 16px 36px; font-size: 17px; border-radius: 13px; font-weight: 600; }
+
+/*
+   CARDS
+   -----
+   .card → standard white card with border and shadow
+*/
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  border-color: #93c5fd;
+  box-shadow: var(--shadow-blue);
+  transform: translateY(-3px);
+}
+
+/* ── 7. HEADER ────────────────────────────────────────────
+   sticky     → stays at top while scrolling
+   backdrop-filter: blur → frosted glass effect
+   The header content is constrained to 1080px via
+   .header-inner so it aligns with page sections.
+──────────────────────────────────────────────────────────── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--blue);
+  letter-spacing: -0.04em;
+  cursor: pointer;
+}
+
+.logo span {
+  color: var(--text);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-links a {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+
+/* ── 8. PAGE WRAPPER (authenticated pages) ────────────────
+   Used on Dashboard, Analytics, Decks etc.
+──────────────────────────────────────────────────────────── */
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 48px 40px;
+}
+
+/* ── 9. RESPONSIVE ────────────────────────────────────────
+   Below 768px (tablet/mobile) we collapse padding and
+   switch grids to single-column.
+──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .container,
+  .section,
+  .page {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .header {
+    padding: 0 20px;
+  }
+
+  .section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .nav-links a:not(:last-child):not(:nth-last-child(2)) {
+    display: none; /* hide text links on mobile, keep buttons */
+  }
+}
